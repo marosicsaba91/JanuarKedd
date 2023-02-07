@@ -1,4 +1,5 @@
-﻿int i = 3;
+﻿/*
+int i = 3;
 while (i <= (3 * 10)) 
 {
     Console.WriteLine(i);
@@ -16,3 +17,4 @@ for (int k = 1; k < 10; k++)
 {
     Console.WriteLine(k + " x 1 = " + k);
 }
+*/
