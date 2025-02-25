@@ -7,18 +7,23 @@ public class SpaceshipController : MonoBehaviour
     [SerializeField] float acceleration = 10;
     [SerializeField] float drag = 0.5f;
 
-    [SerializeField] Projectile bullet;
+    [SerializeField] Projectile[] bullets;
 
     Vector3 velocity;
+    int bulletIndex = 0;
 
     void Update()
     {
         // Lövés --------------------------------------------------
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Projectile newProjectile = 
-                Instantiate(bullet, transform.position, transform.rotation);
+            int i = bulletIndex % bullets.Length;
+
+            Projectile newProjectile =
+                Instantiate(bullets[i], transform.position, transform.rotation);
             newProjectile.SetStartVelocity(velocity);
+
+            bulletIndex++;
         }
 
         // Forgás -------------------------------------
