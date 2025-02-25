@@ -27,12 +27,13 @@ public class ArrayPractice : MonoBehaviour
         // Komponenst lekérdezések
         GameObject go = GameObject.Find("Player");  // string alapú keresés
 
-
         Rigidbody2D rb = go.GetComponent<Rigidbody2D>();       // 
         Rigidbody2D rb2 = FindAnyObjectByType<Rigidbody2D>();  //
 
         Rigidbody2D[] rb3 = go.GetComponents<Rigidbody2D>();
         Rigidbody2D[] rb4 = FindObjectsByType<Rigidbody2D>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+
+        Rigidbody2D rb5 = go.GetComponentInChildren<Rigidbody2D>();       // 
 
     }
 
