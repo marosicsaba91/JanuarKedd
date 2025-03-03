@@ -14,22 +14,21 @@ public class ScreenTeleporter : MonoBehaviour
     void FixedUpdate()
     {
         Rect cameraRect = cameraManager.GetCameraRect();
-
         Bounds objectBound = coll.bounds;
-        // Rect objectRect = new(objectBound.min, objectBound.center);
+
         Rect objectRect = new(objectBound.min, objectBound.size);
 
         if (!cameraRect.Overlaps(objectRect))
         {
             if (cameraRect.xMax < objectRect.xMin)  // Jobb oldalt 
-                transform.position = new(cameraRect.xMin + objectRect.size.x / 2, transform.position.y);
+                transform.position += Vector3.left * (cameraRect.size.x + objectRect.size.x);
             else if (cameraRect.xMin > objectRect.xMax)  // Bal oldalt 
-                transform.position = new(cameraRect.xMax - objectRect.size.x / 2, transform.position.y);
+                transform.position += Vector3.right * (cameraRect.size.x + objectRect.size.x);
 
             if (cameraRect.yMax < objectRect.yMin)  // Fent 
-                transform.position = new(transform.position.x, cameraRect.yMin + objectRect.size.y / 2);
+                transform.position += Vector3.down * (cameraRect.size.y + objectRect.size.y);
             else if (cameraRect.yMin > objectRect.yMax)  // Lent
-                transform.position = new(transform.position.x, cameraRect.yMax - objectRect.size.y / 2);
+                transform.position += Vector3.up * (cameraRect.size.y + objectRect.size.y);
         }
     }
 
