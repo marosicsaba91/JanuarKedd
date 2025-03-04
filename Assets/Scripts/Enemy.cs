@@ -1,17 +1,22 @@
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] Rigidbody2D rigidBody;
     [SerializeField] float smoothTime = 1;
     [SerializeField] float moveDelay = 10;
     [SerializeField] float shootDelay = 5;
     [SerializeField] Projectile bullet;
 
+    void OnValidate()
+    {
+        if (rigidBody == null)
+            rigidBody = GetComponent<Rigidbody2D>();
+    }
+
     float moveTimer;
     float shootTimer;
     Vector3 targetPosition;
-    Vector3 velocity;
 
     CameraManager cameraManager;
     SpaceshipController spaceshipController;
@@ -42,24 +47,20 @@ public class Enemy : MonoBehaviour
             shootTimer -= shootDelay;
         }
 
-        // ???
-        transform.position = Vector3.SmoothDamp(
+        Vector2 v = rigidBody.linearVelocity;
+
+        rigidBody.position = Vector2.SmoothDamp(
             transform.position,
             targetPosition,
-            ref velocity,
+            ref v,
             smoothTime);
+
+        rigidBody.linearVelocity = v;
     }
 
     void MoveToNext()
     {
-        Rect cameraRect = cameraManager.GetCameraRect();
-        float x = Random.Range(cameraRect.xMin, cameraRect.xMax);
-        float y = Random.Range(cameraRect.yMin, cameraRect.yMax);
-        targetPosition = new(x, y);
-
-        //      DETERMINISZTIKUS:
-        //      System.Random random = new (1001012);
-        //      random.NextDouble();
+        targetPosition = cameraManager.GetRandomPositionInCamera();
     }
 
     void Shoot()
@@ -87,5 +88,4 @@ public class Enemy : MonoBehaviour
 
         newProjectile.SetStartVelocity(Vector3.zero);
     }
-
 }

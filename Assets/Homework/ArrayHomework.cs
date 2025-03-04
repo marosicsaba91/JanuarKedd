@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+
 public class ArrayHomework : MonoBehaviour
 {
     [SerializeField] int task1_input = 1;
@@ -33,7 +34,24 @@ public class ArrayHomework : MonoBehaviour
     {
         RemoveEverySecond(task3);
         task6 = Lotto(70, 6);
+
+        // Érték típus
+        int a = 5;
+        int b = a;  // Másolat készül
+        b++;
+        Debug.Log(a);  // 5
+
+        // -----------------
+
+        // Referencia Típusok
+        int[] c = { 1, 10, 100 };
+        int[] d = c;   // Rámutat
+        d[0]++;
+        Debug.Log(c[0]);  // 2
+
     }
+
+
 
     int[] CreateArray_2(int length) 
     {
@@ -97,11 +115,17 @@ public class ArrayHomework : MonoBehaviour
 
     void RemoveEverySecond(List<string> list)
     {
+        // Ellenőrizzük, hogy a lista hossza páros-e
         bool isEven = list.Count % 2 == 0;
+
+        // Ha páros, az utolsó elemtől kezdjük, ha páratlan, az utolsó előtti elemtől
         int startIndex = isEven ? (list.Count - 1) : (list.Count - 2);
 
-        for (int i = startIndex; i >= 0; i-=2)
+        // Végigmegyünk a listán visszafelé, és minden második elemet eltávolítunk
+        // Azért visszafelé, mert ha előre mennénk, akkor az eltávolítás miatt az indexek megváltoznának 
+        for (int i = startIndex; i >= 0; i -= 2)
         {
+            // Kiveszem az elemet ami az i-edik helyen van
             list.RemoveAt(i);
         }
     }

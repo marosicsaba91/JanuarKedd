@@ -5,12 +5,17 @@ public class SpaceshipController : MonoBehaviour
     [SerializeField] float angularSpeed = 90;
     [SerializeField] float maxSpeed = 1;
     [SerializeField] float acceleration = 10;
-    [SerializeField] float drag = 0.5f;
+    // [SerializeField] float drag = 0.5f;
 
     [SerializeField] Projectile[] bullets;
 
-    Vector3 velocity;
     int bulletIndex = 0;
+
+    Rigidbody2D rigidBody;
+    void Awake()
+    {
+        rigidBody = GetComponent<Rigidbody2D>();
+    }
 
     void Update()
     {
@@ -21,7 +26,7 @@ public class SpaceshipController : MonoBehaviour
 
             Projectile newProjectile =
                 Instantiate(bullets[i], transform.position, transform.rotation);
-            newProjectile.SetStartVelocity(velocity);
+            newProjectile.SetStartVelocity(rigidBody.linearVelocity);
 
             bulletIndex++;
         }
@@ -30,6 +35,7 @@ public class SpaceshipController : MonoBehaviour
 
         float rotationInput = Input.GetAxisRaw("Horizontal");
         transform.Rotate(0,0, -rotationInput * angularSpeed * Time.deltaTime);
+        rigidBody.rotation = transform.rotation.eulerAngles.z;
 
         /*
         float roation2D = transform.rotation.eulerAngles.z;
@@ -39,7 +45,7 @@ public class SpaceshipController : MonoBehaviour
 
         // Haladás ---------------------------------------
 
-        transform.position += velocity * Time.deltaTime;
+        // transform.position += velocity * Time.deltaTime;
     }
 
     void FixedUpdate()
@@ -48,15 +54,19 @@ public class SpaceshipController : MonoBehaviour
 
         float movementInput = Input.GetAxisRaw("Vertical");
         movementInput = Mathf.Max(movementInput, 0);
-        Vector3 accelerationVector = transform.up * movementInput * acceleration;
+        Vector2 accelerationVector = transform.up * movementInput * acceleration;
 
-        velocity += accelerationVector * Time.fixedDeltaTime;
+        rigidBody.linearVelocity += accelerationVector * Time.fixedDeltaTime;
+
+         rigidBody.AddForce(accelerationVector, ForceMode2D.Force);
 
         // Lassulás ----------------------------------------------------
-
+        /*
         Vector3 dragVector = -velocity * drag;
         velocity += dragVector * Time.fixedDeltaTime;
-        velocity = Vector3.ClampMagnitude(velocity, maxSpeed);
+        */
+
+        rigidBody.linearVelocity = Vector3.ClampMagnitude(rigidBody.linearVelocity, maxSpeed);
     }
 
 
